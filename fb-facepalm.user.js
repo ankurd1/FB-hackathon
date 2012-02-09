@@ -18,7 +18,28 @@ function addJQuery(callback) {
 
 // the guts of this userscript
 function main() {
-	$(".UIActionLinks UIActionLinks_bottom").append('facepalm');
+	//add facepalm button
+	$(".like_link").after('<a class="facepalm_but" style="color:#6D84B4">&nbsp;Facepalm</a>');
+	$(".facepalm_but").click(function () {
+		alert("Please comment \"Facepalm!\" ;) ...");
+	});
+	//parse facepalms
+	setInterval(function () {
+		$('.facepalmnum').remove();
+		$(".mainWrapper").each(function(index) {
+			//$(this) is the mainWrapper here
+			var facepalms = 0;
+			$(".commentList .ufiItem", $(this)).each(function(i) {
+				if ($(".commentBody", $(this)).text() == "Facepalm!") {
+					$(this).hide();
+					facepalms++;
+				}
+			});
+			if (facepalms > 0) {
+				$(".uiStreamFooter", $(this)).after('<ul class="facepalmnum uiUfi"><li class="ufiItem uiUfiUnseenItem"><img width="16px" src="http://www.jonrb.com/emoticons/facepalm.gif"></img>'+ facepalms + " people Facepalm'd this!</li></ul>");
+			}
+		});
+	}, 1000);	
 }
 
 // load jQuery and execute the main function
